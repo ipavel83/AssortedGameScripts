@@ -12,6 +12,20 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Input.is_action_pressed("key_pause"):
+	if Input.is_action_just_pressed("key_pause"):
 		var nnode = get_child(0)
-		nnode.freeze_node(nnode, true)
+		freeze_node(nnode, true)
+
+func freeze_node(node, freeze):
+	node.set_process(!freeze)
+	node.set_physics_process(!freeze)
+	node.set_process_input(!freeze)
+	node.set_process_internal(!freeze)
+	node.set_process_unhandled_input(!freeze)
+	node.set_process_unhandled_key_input(!freeze)
+	print("pause presssed")
+
+func freeze_scene(node, freeze):
+	freeze_node(node, freeze)
+	for c in node.get_children():
+		freeze_scene(c, freeze)
